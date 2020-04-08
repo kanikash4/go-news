@@ -1,6 +1,6 @@
  ## To compile and run server up:
 
-	`go run main.go -apikey=<your newsapi access key>`
+	`go run main.go`
 
 
  Now open the browser and run localhost:
