@@ -112,6 +112,8 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	pageSize := 20
 
 	endpoint := fmt.Sprintf("https://newsapi.org/v2/everything?q=%s&pageSize=%d&page=%d&apiKey=%s&sortBy=publishedAt&language=en", url.QueryEscape(search.SearchKey), pageSize, search.NextPage, *apiKey)
+	//endpoint for top headlines: /v2/top-headlines
+	// e.g. http://newsapi.org/v2/top-headlines?country=us&apiKey=<api_key>
 	resp, err := http.Get(endpoint)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -142,6 +144,13 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+
+func topTrending(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func sortNews(w http.ResponseWriter, r *http.Request) {}
+
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -161,6 +170,9 @@ func main() {
 	mux.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	/*registering the searchHandler function as the handler for the `/search` path*/
 	mux.HandleFunc("/search", searchHandler)
+	mux.HandleFunc("/toptrending", topTrending)
+	//Sort for: Date published, Relevancy to search keyword, Popularity of source
+	mux.HandleFunc("/sort", sortNews)
 	mux.HandleFunc("/", indexHandler)
 	/*ListenAndServe: starts the server on the given port number*/
 	http.ListenAndServe(":"+port, mux)
